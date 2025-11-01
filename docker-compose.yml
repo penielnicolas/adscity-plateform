@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  api:
+    build: ./packages/api-server
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - adscity-network
+
+  auth:
+    build: ./packages/auth-app
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_API_URL=https://api.adscity.net
+      - REACT_APP_AUTH_URL=https://auth.adscity.net
+    networks:
+      - adscity-network
+
+  main:
+    build: ./packages/main-app
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=https://api.adscity.net
+      - REACT_APP_AUTH_URL=https://auth.adscity.net
+    networks:
+      - adscity-network
+
+  account:
+    build: ./packages/account-app
+    ports:
+      - "3002:3000"
+    environment:
+      - REACT_APP_API_URL=https://api.adscity.net
+      - REACT_APP_AUTH_URL=https://auth.adscity.net
+    networks:
+      - adscity-network
+
+networks:
+  adscity-network:
+    driver: bridge
